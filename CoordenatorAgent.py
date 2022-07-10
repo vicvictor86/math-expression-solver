@@ -1,8 +1,9 @@
 import time
 from spade.agent import Agent
-from spade.behaviour import OneShotBehaviour, CyclicBehaviour
+from spade.behaviour import CyclicBehaviour
 from spade.template import Template
 from makeMessage import make_message
+
 
 class CoordenatorAgent(Agent):
     class CoordenatorBehav(CyclicBehaviour):
@@ -18,15 +19,17 @@ class CoordenatorAgent(Agent):
 
             msg = await self.receive(timeout=10)
             if msg:
-                print("CoordenatorAgent received the message with content {}".format(msg.body))
-                await self.agent.stop() 
-            
+                print(
+                    "CoordenatorAgent received the message with content {}".format(msg.body))
+                await self.agent.stop()
+
     async def setup(self):
         print("CoordenatorAgent started")
 
         informBehav = self.CoordenatorBehav()
 
         self.add_behaviour(informBehav)
+
 
 class ReceiverAgent(Agent):
     class RecvBehav(CyclicBehaviour):
@@ -53,6 +56,7 @@ class ReceiverAgent(Agent):
         template = Template()
         template.set_metadata("performative", "inform")
         self.add_behaviour(recvBehav, template)
+
 
 if __name__ == "__main__":
     print("Running")

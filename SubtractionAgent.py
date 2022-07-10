@@ -5,6 +5,7 @@ from spade.template import Template
 from makeMessage import make_message
 from CoordenatorAgent import CoordenatorAgent
 
+
 class SubtractionAgent(Agent):
     class SubtractionBehav(CyclicBehaviour):
         def generate_result(self, numbers):
@@ -21,12 +22,13 @@ class SubtractionAgent(Agent):
                 numbers = msg.body.split(" ")
 
                 result = self.generate_result(numbers)
-                
+
                 msg_send = make_message("vicvictor@anoxinon.me", result)
 
                 await self.send(msg_send)
 
-                print("SubtractionAgent received the message with content: {}".format(numbers))
+                print(
+                    "SubtractionAgent received the message with content: {}".format(numbers))
 
             else:
                 print("Did not received any message after 10 seconds")

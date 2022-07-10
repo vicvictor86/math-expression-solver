@@ -5,6 +5,7 @@ from spade.template import Template
 from makeMessage import make_message
 from CoordenatorAgent import CoordenatorAgent
 
+
 class AdditionAgent(Agent):
     class AdditionBehav(CyclicBehaviour):
         def generate_result(self, numbers):
@@ -21,12 +22,16 @@ class AdditionAgent(Agent):
                 numbers = msg.body.split(" ")
 
                 result = self.generate_result(numbers)
-                
+
                 msg_send = make_message("vicvictor@anoxinon.me", result)
 
                 await self.send(msg_send)
 
-                print("AdditionAgent received the message with content: {}".format(numbers))
+                print(
+                    "AdditionAgent received the message with content: {}".format(
+                        numbers
+                    )
+                )
 
             else:
                 print("Did not received any message after 10 seconds")
@@ -43,6 +48,7 @@ class AdditionAgent(Agent):
 
         self.add_behaviour(sumBehav, template)
 
+
 if __name__ == "__main__":
     print("Running")
 
@@ -52,7 +58,7 @@ if __name__ == "__main__":
 
     senderagent = CoordenatorAgent("vicvictor@anoxinon.me", "clEitonr@cha12")
     senderagent.start()
-    
+
     receiveragent.web.start(hostname="127.0.0.1", port="10000")
     senderagent.web.start(hostname="127.0.0.1", port="10001")
 

@@ -5,6 +5,7 @@ from spade.template import Template
 from makeMessage import make_message
 from CoordenatorAgent import CoordenatorAgent
 
+
 class MultiplyAgent(Agent):
     class MultiplyBehav(CyclicBehaviour):
         def generate_result(self, numbers):
@@ -16,17 +17,19 @@ class MultiplyAgent(Agent):
         async def run(self):
             print("MultiplyBehav running")
 
-            msg = await self.receive(timeout=10) # wait for a message for 10 seconds
+            # wait for a message for 10 seconds
+            msg = await self.receive(timeout=10)
             if msg:
                 numbers = msg.body.split(" ")
 
                 result = self.generate_result(numbers)
-                
+
                 msg_send = make_message("vicvictor@anoxinon.me", result)
 
                 await self.send(msg_send)
 
-                print("MultiplyAgent received the message with content: {}".format(numbers))
+                print(
+                    "MultiplyAgent received the message with content: {}".format(numbers))
 
             else:
                 print("Did not received any message after 10 seconds")
@@ -42,6 +45,7 @@ class MultiplyAgent(Agent):
         template.set_metadata("performative", "inform")
 
         self.add_behaviour(multiplyBehav, template)
+
 
 if __name__ == "__main__":
     print("Running")
