@@ -1,27 +1,34 @@
 import time
+
 from spade.agent import Agent
 from spade.behaviour import CyclicBehaviour
 from spade.template import Template
-from makeMessage import make_message
+
+from AdditionAgent import AdditionAgent
+from makeMessage import makeMessage
 
 
 class CoordenatorAgent(Agent):
     class CoordenatorBehav(CyclicBehaviour):
         async def run(self):
             print("CoordenatorBehav running")
-            msg = make_message("cleitin@anoxinon.me", "2 4 6")
+            data = str(input("Digite a expressão > "))
+
+            # Tratar a expressão para saber qual agente chamar
+
+            # Enviar mensagem para o respectivo agente
+            receiveragent = AdditionAgent("sumagent@anoxinon.me", "sum")
+            await receiveragent.start(auto_register=True)
+
+            msg = makeMessage("sumagent@anoxinon.me", data)
 
             await self.send(msg)
-            print("Message sent!")
-
-            # stop agent from behaviour
-            # await self.agent.stop()
+            print(f"Message sent! ({data})")
 
             msg = await self.receive(timeout=10)
             if msg:
-                print(
-                    "CoordenatorAgent received the message with content {}".format(msg.body))
-                await self.agent.stop()
+                print(f"Result received! ({msg.body})")
+                # await self.agent.stop()
 
     async def setup(self):
         print("CoordenatorAgent started")
@@ -38,17 +45,12 @@ class ReceiverAgent(Agent):
 
             msg = await self.receive(timeout=10)
             if msg:
-                numbers = msg.body.split(" ")
-                result = 0
-                for number in numbers:
-                    result += int(number)
-                print("Message received with content: {}".format(result))
-
+                print(f"Message received with content: {msg.body}")
+                await self.agent.stop()
             else:
                 print("Did not received any message after 10 seconds")
 
             # stop agent from behaviour
-            # await self.agent.stop()
 
     async def setup(self):
         print("ReceiverAgent started")
@@ -59,23 +61,15 @@ class ReceiverAgent(Agent):
 
 
 if __name__ == "__main__":
-    print("Running")
-
-    receiveragent = ReceiverAgent("cleitin@anoxinon.me", "coxinha123")
-    future = receiveragent.start()
-    future.result()
-
-    senderagent = CoordenatorAgent("vicvictor@anoxinon.me", "clEitonr@cha12")
+    senderagent = CoordenatorAgent("coordenatoragent@anoxinon.me", "coordenator")
     senderagent.start()
 
-    receiveragent.web.start(hostname="127.0.0.1", port="10000")
-    senderagent.web.start(hostname="127.0.0.1", port="10001")
+    senderagent.web.start(hostname="127.0.0.1", port="2")
 
     while True:
         try:
             time.sleep(1)
         except KeyboardInterrupt:
             senderagent.stop()
-            receiveragent.stop()
             break
     print("Agents finished")
