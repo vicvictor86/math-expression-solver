@@ -1,10 +1,9 @@
 import time
 
 from spade.agent import Agent
-from spade.behaviour import CyclicBehaviour, OneShotBehaviour
+from spade.behaviour import CyclicBehaviour
 from spade.template import Template
 
-from CoordenatorAgent import CoordenatorAgent
 from makeMessage import makeMessage
 
 
@@ -12,8 +11,8 @@ class SubtractionAgent(Agent):
     class SubtractionBehav(CyclicBehaviour):
         def generateResult(self, numbers):
             result = 0
-            for number in numbers:
-                result -= int(number)
+            result = float(numbers[0]) - float(numbers[1])
+
             return result
 
         async def run(self):

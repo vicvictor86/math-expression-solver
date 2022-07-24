@@ -11,14 +11,14 @@ class AdditionAgent(Agent):
     class AdditionBehav(CyclicBehaviour):
         def generateResult(self, numbers):
             result = 0
-            for number in numbers:
-                result += int(number)
+            result = float(numbers[0]) + float(numbers[1])
             return result
 
         async def run(self):
             print("AdditionBehav running")
 
             msg = await self.receive(timeout=10)
+
             if msg:
                 numbers = msg.body.split(" ")
                 result = self.generateResult(numbers)

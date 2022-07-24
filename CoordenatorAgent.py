@@ -5,25 +5,47 @@ from spade.behaviour import CyclicBehaviour
 from spade.template import Template
 
 from AdditionAgent import AdditionAgent
+from MultiplyAgent import MultiplyAgent
+from SubtractionAgent import SubtractionAgent
+
 from makeMessage import makeMessage
 
+from EquationAnalysis import resolve_expressao
 
 class CoordenatorAgent(Agent):
     class CoordenatorBehav(CyclicBehaviour):
         async def run(self):
             print("CoordenatorBehav running")
-            data = str(input("Digite a expressão > "))
+            # data = str(input("Digite a expressão > "))
 
             # Tratar a expressão para saber qual agente chamar
 
+            data = resolve_expressao("2+2")
+
+            onlyNumbersData = f"{data['x1']} {data['x2']}"
+
             # Enviar mensagem para o respectivo agente
-            receiveragent = AdditionAgent("sumagent@anoxinon.me", "sum")
+            receiveragent = None
+            if data["Op"] == "+":
+                receiveragent = AdditionAgent("sumagent@anoxinon.me", "sum")
+            elif data["Op"] == "-":
+                receiveragent = SubtractionAgent("sumagent@anoxinon.me", "sum")
+            elif data["Op"] == "/":
+                pass
+                # receiveragent = DivisionAgent("sumagent@anoxinon.me", "sum")
+            elif data["Op"] == "^":
+                pass
+                # receiveragent = PotentiationAgent("sumagent@anoxinon.me", "sum")
+            elif data["Op"] == "*":
+                receiveragent = MultiplyAgent("sumagent@anoxinon.me", "sum")
+
             await receiveragent.start(auto_register=True)
 
-            msg = makeMessage("sumagent@anoxinon.me", data)
+            print(onlyNumbersData)
+            msg = makeMessage("sumagent@anoxinon.me", onlyNumbersData)
 
             await self.send(msg)
-            print(f"Message sent! ({data})")
+            print(f"Message sent! ({onlyNumbersData})")
 
             msg = await self.receive(timeout=10)
             if msg:
