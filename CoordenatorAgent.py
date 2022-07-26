@@ -5,12 +5,12 @@ from spade.behaviour import CyclicBehaviour
 from spade.template import Template
 
 from AdditionAgent import AdditionAgent
+from DivisionAgent import DivisionAgent
+from EquationAnalysis import resolve_expressao, separa_elementos_string
+from makeMessage import makeMessage
 from MultiplyAgent import MultiplyAgent
 from SubtractionAgent import SubtractionAgent
 
-from makeMessage import makeMessage
-
-from EquationAnalysis import resolve_expressao, separa_elementos_string
 
 class CoordenatorAgent(Agent):
     class CoordenatorBehav(CyclicBehaviour):
@@ -21,7 +21,7 @@ class CoordenatorAgent(Agent):
 
             # Tratar a expressão para saber qual agente chamar
 
-            data = separa_elementos_string("2-4*3+4")
+            data = separa_elementos_string("2-4*3/4")
             print(data)
 
             while(len(data) > 1):
@@ -36,24 +36,25 @@ class CoordenatorAgent(Agent):
                     del(data[data.index('+') + 1])
                     del(data[data.index('+') - 1])
                 elif operands["Op"] == "-":
-                    receiveragent = SubtractionAgent("sumagent@anoxinon.me", "sum")
+                    receiveragent = SubtractionAgent("minusagent@anoxinon.me", "minus")
                     del(data[data.index('-') + 1])
                     del(data[data.index('-') - 1])
                 elif operands["Op"] == "/":
-                    pass
-                    # receiveragent = DivisionAgent("sumagent@anoxinon.me", "sum")
+                    receiveragent = DivisionAgent("divisionagent@anoxinon.me", "division")
+                    del(data[data.index('/') + 1])
+                    del(data[data.index('/') - 1])
                 elif operands["Op"] == "^":
                     pass
                     # receiveragent = PotentiationAgent("sumagent@anoxinon.me", "sum")
                 elif operands["Op"] == "*":
-                    receiveragent = MultiplyAgent("sumagent@anoxinon.me", "sum")
+                    receiveragent = MultiplyAgent("multiplyagent@anoxinon.me", "multiply")
                     del(data[data.index('*') + 1])
                     del(data[data.index('*') - 1])
 
                 await receiveragent.start(auto_register=True)
 
                 print(onlyNumbersData)
-                msg = makeMessage("sumagent@anoxinon.me", onlyNumbersData)
+                msg = makeMessage(str(receiveragent.jid), onlyNumbersData)
 
                 await self.send(msg)
                 print(f"Message sent! ({onlyNumbersData})")
@@ -61,7 +62,7 @@ class CoordenatorAgent(Agent):
                 msg = await self.receive(timeout=10)
                 if msg:
                     print(f"Result received! ({msg.body})")
-                    
+
                     data[data.index(operands["Op"])] = msg.body
                     print(f"Solucao: {data}")
                     # self.run(str(data).strip('[]'))

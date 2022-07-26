@@ -45,7 +45,7 @@ class SubtractionAgent(Agent):
 
 
 if __name__ == "__main__":
-    receiveragent = SubtractionAgent("cleitin@anoxinon.me", "coxinha123")
+    receiveragent = SubtractionAgent("minusagent@anoxinon.me", "minus")
     future = receiveragent.start()
     future.result()
 

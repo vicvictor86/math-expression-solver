@@ -30,41 +30,30 @@ def resolve_expressao(expressao):
     elif '^' in solucao:
         x1 = float (solucao[solucao.index('^') - 1])
         x2 = float (solucao[solucao.index('^') + 1])
-        del(solucao[solucao.index('^') - 1])
-        del(solucao[solucao.index('^') + 1])
         toResolve['x1'] = x1
         toResolve['x2'] = x2
         toResolve['Op'] = '^'
-    # elif 'sqrt' in solucao:
     elif '*' in solucao:
         x1 = float (solucao[solucao.index('*') - 1])
         x2 = float (solucao[solucao.index('*') + 1])
-        # del(solucao[solucao.index('*') - 1])
-        # del(solucao[solucao.index('*') + 1])
         toResolve['x1'] = x1
         toResolve['x2'] = x2
         toResolve['Op'] = '*'
     elif '/' in solucao:
         x1 = float (solucao[solucao.index('/') - 1])
         x2 = float (solucao[solucao.index('/') + 1])
-        del(solucao[solucao.index('/') - 1])
-        del(solucao[solucao.index('/') + 1])
         toResolve['x1'] = x1
         toResolve['x2'] = x2
         toResolve['Op'] = '/'
     elif '-' in solucao:
         x1 = float (solucao[solucao.index('-') - 1])
         x2 = float (solucao[solucao.index('-') + 1])
-        # del(solucao[solucao.index('-') - 1])
-        # del(solucao[solucao.index('-') + 1])
         toResolve['x1'] = x1
         toResolve['x2'] = x2
         toResolve['Op'] = '-'
     elif '+' in solucao:
         x1 = float (solucao[solucao.index('+') - 1])
         x2 = float (solucao[solucao.index('+') + 1])
-        # del(solucao[solucao.index('+') - 1])
-        # del(solucao[solucao.index('+') + 1])
         toResolve['x1'] = x1
         toResolve['x2'] = x2
         toResolve['Op'] = '+'
@@ -73,15 +62,6 @@ def resolve_expressao(expressao):
     return toResolve
 
 
-# problema1 = "22 + 52 * 4 + 5"
-# problema1_sep = separa_elementos_string(problema1)
-# print(problema1_sep)
-# print(resolve_expressao(problema1_sep))
-
-# problema1 = "22 + 52 * (4 + 1) "
-# problema1_sep = separa_elementos_string(problema1)
-# print(problema1_sep)
-# print(resolve_expressao(problema1_sep))
 
 # problema1 = "23 + 12 - 55 + (2 + 4) - 8 / 2^2"
 # problema1_sep = separa_elementos_string(problema1)
