@@ -10,47 +10,63 @@ from SubtractionAgent import SubtractionAgent
 
 from makeMessage import makeMessage
 
-from EquationAnalysis import resolve_expressao
+from EquationAnalysis import resolve_expressao, separa_elementos_string
 
 class CoordenatorAgent(Agent):
     class CoordenatorBehav(CyclicBehaviour):
+
         async def run(self):
             print("CoordenatorBehav running")
             # data = str(input("Digite a expressão > "))
 
             # Tratar a expressão para saber qual agente chamar
 
-            data = resolve_expressao("2+2")
+            data = separa_elementos_string("2-4*3+4")
+            print(data)
 
-            onlyNumbersData = f"{data['x1']} {data['x2']}"
+            while(len(data) > 1):
+                operands = resolve_expressao(data)
 
-            # Enviar mensagem para o respectivo agente
-            receiveragent = None
-            if data["Op"] == "+":
-                receiveragent = AdditionAgent("sumagent@anoxinon.me", "sum")
-            elif data["Op"] == "-":
-                receiveragent = SubtractionAgent("sumagent@anoxinon.me", "sum")
-            elif data["Op"] == "/":
-                pass
-                # receiveragent = DivisionAgent("sumagent@anoxinon.me", "sum")
-            elif data["Op"] == "^":
-                pass
-                # receiveragent = PotentiationAgent("sumagent@anoxinon.me", "sum")
-            elif data["Op"] == "*":
-                receiveragent = MultiplyAgent("sumagent@anoxinon.me", "sum")
+                onlyNumbersData = f"{operands['x1']} {operands['x2']}"
 
-            await receiveragent.start(auto_register=True)
+                # Enviar mensagem para o respectivo agente
+                receiveragent = None
+                if operands["Op"] == "+":
+                    receiveragent = AdditionAgent("sumagent@anoxinon.me", "sum")
+                    del(data[data.index('+') + 1])
+                    del(data[data.index('+') - 1])
+                elif operands["Op"] == "-":
+                    receiveragent = SubtractionAgent("sumagent@anoxinon.me", "sum")
+                    del(data[data.index('-') + 1])
+                    del(data[data.index('-') - 1])
+                elif operands["Op"] == "/":
+                    pass
+                    # receiveragent = DivisionAgent("sumagent@anoxinon.me", "sum")
+                elif operands["Op"] == "^":
+                    pass
+                    # receiveragent = PotentiationAgent("sumagent@anoxinon.me", "sum")
+                elif operands["Op"] == "*":
+                    receiveragent = MultiplyAgent("sumagent@anoxinon.me", "sum")
+                    del(data[data.index('*') + 1])
+                    del(data[data.index('*') - 1])
 
-            print(onlyNumbersData)
-            msg = makeMessage("sumagent@anoxinon.me", onlyNumbersData)
+                await receiveragent.start(auto_register=True)
 
-            await self.send(msg)
-            print(f"Message sent! ({onlyNumbersData})")
+                print(onlyNumbersData)
+                msg = makeMessage("sumagent@anoxinon.me", onlyNumbersData)
 
-            msg = await self.receive(timeout=10)
-            if msg:
-                print(f"Result received! ({msg.body})")
-                # await self.agent.stop()
+                await self.send(msg)
+                print(f"Message sent! ({onlyNumbersData})")
+
+                msg = await self.receive(timeout=10)
+                if msg:
+                    print(f"Result received! ({msg.body})")
+                    
+                    data[data.index(operands["Op"])] = msg.body
+                    print(f"Solucao: {data}")
+                    # self.run(str(data).strip('[]'))
+                    # await self.agent.stop()
+            print(f"================SOLUCAO FINAL: {data}================")
 
     async def setup(self):
         print("CoordenatorAgent started")

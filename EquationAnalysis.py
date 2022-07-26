@@ -19,7 +19,8 @@ def separa_elementos_string(expressao):
 
 # resolve uma expressao definida em um vetor
 def resolve_expressao(expressao):
-    solucao = separa_elementos_string(expressao)
+    # solucao = separa_elementos_string(expressao)
+    solucao = expressao
     toResolve = {}
     if '(' in solucao:
         prioridade = solucao[solucao.index('(') + 1:solucao.index(')')]
@@ -38,8 +39,8 @@ def resolve_expressao(expressao):
     elif '*' in solucao:
         x1 = float (solucao[solucao.index('*') - 1])
         x2 = float (solucao[solucao.index('*') + 1])
-        del(solucao[solucao.index('*') - 1])
-        del(solucao[solucao.index('*') + 1])
+        # del(solucao[solucao.index('*') - 1])
+        # del(solucao[solucao.index('*') + 1])
         toResolve['x1'] = x1
         toResolve['x2'] = x2
         toResolve['Op'] = '*'
@@ -54,16 +55,16 @@ def resolve_expressao(expressao):
     elif '-' in solucao:
         x1 = float (solucao[solucao.index('-') - 1])
         x2 = float (solucao[solucao.index('-') + 1])
-        del(solucao[solucao.index('-') - 1])
-        del(solucao[solucao.index('-') + 1])
+        # del(solucao[solucao.index('-') - 1])
+        # del(solucao[solucao.index('-') + 1])
         toResolve['x1'] = x1
         toResolve['x2'] = x2
         toResolve['Op'] = '-'
     elif '+' in solucao:
         x1 = float (solucao[solucao.index('+') - 1])
         x2 = float (solucao[solucao.index('+') + 1])
-        del(solucao[solucao.index('+') - 1])
-        del(solucao[solucao.index('+') + 1])
+        # del(solucao[solucao.index('+') - 1])
+        # del(solucao[solucao.index('+') + 1])
         toResolve['x1'] = x1
         toResolve['x2'] = x2
         toResolve['Op'] = '+'
