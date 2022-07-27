@@ -6,11 +6,12 @@ from spade.template import Template
 
 from AdditionAgent import AdditionAgent
 from DivisionAgent import DivisionAgent
-from ExpressionAnalysis import solve_expression, separateString
-from makeMessage import makeMessage
+from ExponentiationAgent import ExponentiationAgent
 from MultiplyAgent import MultiplyAgent
 from SubtractionAgent import SubtractionAgent
 
+from ExpressionAnalysis import solve_expression, separateString
+from makeMessage import makeMessage
 
 class CoordenatorAgent(Agent):
     class CoordenatorBehav(CyclicBehaviour):
@@ -24,7 +25,7 @@ class CoordenatorAgent(Agent):
             #Resultado = 25
             data = separateString("(100 – 413 * (20 – 5 * 4) + 25) / 5")
 
-            #Resultado = 25
+            #Resultado = 32
             # data = separateString("27 + (14 + 3 * (100 / (18 – 4 * 2) + 7) ) / 13")
 
             #Resultado = 180
@@ -49,8 +50,7 @@ class CoordenatorAgent(Agent):
                 elif operands["Op"] == "/":
                     receiveragent = DivisionAgent("divisionagent@anoxinon.me", "division")
                 elif operands["Op"] == "^":
-                    pass
-                    # receiveragent = PotentiationAgent("sumagent@anoxinon.me", "sum")
+                    receiveragent = ExponentiationAgent("exponentiationAgent@anoxinon.me", "exponentiation")
                 elif operands["Op"] == "*":
                     receiveragent = MultiplyAgent("multiplyagent@anoxinon.me", "multiply")
 
