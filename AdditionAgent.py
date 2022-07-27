@@ -9,19 +9,17 @@ from makeMessage import makeMessage
 
 class AdditionAgent(Agent):
     class AdditionBehav(CyclicBehaviour):
-        def generateResult(self, numbers):
-            result = 0
-            for number in numbers:
-                result += int(number)
-            return result
+        def generateResult(self, n1, n2):
+            return float(n1) + float(n2)
 
         async def run(self):
             print("AdditionBehav running")
 
             msg = await self.receive(timeout=10)
+
             if msg:
                 numbers = msg.body.split(" ")
-                result = self.generateResult(numbers)
+                result = self.generateResult(numbers[0], numbers[1])
                 msgSend = makeMessage("coordenatoragent@anoxinon.me", result)
 
                 await self.send(msgSend)

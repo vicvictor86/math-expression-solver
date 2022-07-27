@@ -4,17 +4,13 @@ from spade.agent import Agent
 from spade.behaviour import CyclicBehaviour
 from spade.template import Template
 
-from CoordenatorAgent import CoordenatorAgent
 from makeMessage import makeMessage
 
 
 class MultiplyAgent(Agent):
     class MultiplyBehav(CyclicBehaviour):
-        def generateResult(self, numbers):
-            result = 1
-            for number in numbers:
-                result *= int(number)
-            return result
+        def generateResult(self, n1, n2):
+            return float(n1) * float(n2)
 
         async def run(self):
             print("MultiplyBehav running")
@@ -23,7 +19,7 @@ class MultiplyAgent(Agent):
             msg = await self.receive(timeout=10)
             if msg:
                 numbers = msg.body.split(" ")
-                result = self.generateResult(numbers)
+                result = self.generateResult(numbers[0], numbers[1])
                 msgSend = makeMessage("coordenatoragent@anoxinon.me", result)
 
                 await self.send(msgSend)
@@ -47,7 +43,7 @@ class MultiplyAgent(Agent):
 
 
 if __name__ == "__main__":
-    receiveragent = MultiplyAgent("cleitin@anoxinon.me", "coxinha123")
+    receiveragent = MultiplyAgent("multiplyagent@anoxinon.me", "multiply")
     future = receiveragent.start()
     future.result()
 

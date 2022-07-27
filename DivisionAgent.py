@@ -7,14 +7,15 @@ from spade.template import Template
 from makeMessage import makeMessage
 
 
-class SubtractionAgent(Agent):
-    class SubtractionBehav(CyclicBehaviour):
+class DivisionAgent(Agent):
+    class DivisionBehav(CyclicBehaviour):
         def generateResult(self, n1, n2):
-            return float(n1) - float(n2)
+            return float(n1) / float(n2)
 
         async def run(self):
-            print("SubtractionBehav running")
+            print("DivisionBehav running")
 
+            # wait for a message for 10 seconds
             msg = await self.receive(timeout=10)
             if msg:
                 numbers = msg.body.split(" ")
@@ -32,20 +33,19 @@ class SubtractionAgent(Agent):
             #
 
     async def setup(self):
-        print("SubtractionAgent started")
-        subtractBehav = self.SubtractionBehav()
+        print("ReceiverAgent started")
+        divisionBehav = self.DivisionBehav()
 
         template = Template()
         template.set_metadata("performative", "inform")
 
-        self.add_behaviour(subtractBehav, template)
+        self.add_behaviour(divisionBehav, template)
 
 
 if __name__ == "__main__":
-    receiveragent = SubtractionAgent("minusagent@anoxinon.me", "minus")
+    receiveragent = DivisionAgent("divisionagent@anoxinon.me", "division")
     future = receiveragent.start()
     future.result()
-
 
     receiveragent.web.start(hostname="127.0.0.1", port="10000")
 
@@ -55,4 +55,5 @@ if __name__ == "__main__":
         except KeyboardInterrupt:
             receiveragent.stop()
             break
+
     print("Agents finished")

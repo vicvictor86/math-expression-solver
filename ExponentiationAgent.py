@@ -7,15 +7,16 @@ from spade.template import Template
 from makeMessage import makeMessage
 
 
-class SubtractionAgent(Agent):
-    class SubtractionBehav(CyclicBehaviour):
+class ExponentiationAgent(Agent):
+    class ExponentiationBehav(CyclicBehaviour):
         def generateResult(self, n1, n2):
-            return float(n1) - float(n2)
+            return pow(float(n1), float(n2))
 
         async def run(self):
-            print("SubtractionBehav running")
+            print("ExponentiationBehav running")
 
             msg = await self.receive(timeout=10)
+
             if msg:
                 numbers = msg.body.split(" ")
                 result = self.generateResult(numbers[0], numbers[1])
@@ -25,6 +26,7 @@ class SubtractionAgent(Agent):
 
                 print(f"Result send! ({result})")
                 await self.agent.stop()
+
             else:
                 print("Did not received any message after 10 seconds")
 
@@ -32,20 +34,19 @@ class SubtractionAgent(Agent):
             #
 
     async def setup(self):
-        print("SubtractionAgent started")
-        subtractBehav = self.SubtractionBehav()
+        print("ExponentiationAgent started")
+        sumBehav = self.ExponentiationBehav()
 
         template = Template()
         template.set_metadata("performative", "inform")
 
-        self.add_behaviour(subtractBehav, template)
+        self.add_behaviour(sumBehav, template)
 
 
 if __name__ == "__main__":
-    receiveragent = SubtractionAgent("minusagent@anoxinon.me", "minus")
+    receiveragent = ExponentiationAgent("exponentiationAgent@anoxinon.me", "exponentiation")
     future = receiveragent.start()
     future.result()
-
 
     receiveragent.web.start(hostname="127.0.0.1", port="10000")
 
