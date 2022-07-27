@@ -30,7 +30,6 @@ def solve_expression(expression):
     if '(' in answer:
         openParentheses = [i for i, item in enumerate(answer) if item == '(']
         closedParentheses = [i for i, item in enumerate(answer) if item == ')']
-        x_index = 0
         if len(answer[max(openParentheses)+1:min(closedParentheses)-1]) <= 3:
             x1 = float (answer[max(openParentheses) + 1])
             x2 = float (answer[min(closedParentheses) - 1])
