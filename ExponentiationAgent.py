@@ -31,8 +31,7 @@ class ExponentiationAgent(Agent):
                 print("Did not received any message after 10 seconds")
 
             # stop agent from behaviour
-            #
-
+            
     async def setup(self):
         print("ExponentiationAgent started")
         sumBehav = self.ExponentiationBehav()

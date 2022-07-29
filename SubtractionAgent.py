@@ -29,7 +29,6 @@ class SubtractionAgent(Agent):
                 print("Did not received any message after 10 seconds")
 
             # stop agent from behaviour
-            #
 
     async def setup(self):
         print("SubtractionAgent started")
@@ -45,7 +44,6 @@ if __name__ == "__main__":
     receiveragent = SubtractionAgent("minusagent@anoxinon.me", "minus")
     future = receiveragent.start()
     future.result()
-
 
     receiveragent.web.start(hostname="127.0.0.1", port="10000")
 

@@ -4,9 +4,9 @@ def operationIndex(list, parantheses_ini, operacao):
         if temp[i] == operacao:
             return i + parantheses_ini
 
-# separa todos os elementos de uma expressao e distribui em um vetor
+# separates all elements of an expression and distributes it into a list
 def separateString(expression):
-    expression = expression.replace('–', '-') # o sinal de subtracao `-` do professor esta diferente: `–`
+    expression = expression.replace('–', '-') # the teacher's minus sign `-` is different: `–`
     list = []
     a = ""
     for i in range(0, len(expression)):
@@ -23,7 +23,7 @@ def separateString(expression):
                 a = ""
     return list
 
-# resolve uma expressao definida em um vetor
+# solves a expression from a list
 def solve_expression(expression):
     answer = expression
     toResolve = {}
@@ -80,8 +80,3 @@ def solve_expression(expression):
         toResolve['n'] = answer.index(toResolve['Op'])
 
     return toResolve
-
-# problema1 = "23 + 12 - 55 + (2 + 4) - 8 / 2^2"
-# problema1_sep = separa_elementos_string(problema1)
-# print(problema1_sep)
-# print(resolve_expressao(problema1_sep))

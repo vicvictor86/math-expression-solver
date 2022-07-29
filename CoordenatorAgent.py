@@ -18,22 +18,29 @@ class CoordenatorAgent(Agent):
 
         async def run(self):
             print("CoordenatorBehav running")
-            # data = str(input("Digite a expressão > "))
+
+            # Receives a expression from user
+            data = separateString(str(input("Digite a expressão > ")))
 
             # Tratar a expressão para saber qual agente chamar
 
-            #Resultado = 25
+            # Answer = 25
             # data = separateString("(100 – 413 * (20 – 5 * 4) + 25) / 5")
-            data = separateString("5 - 3")
 
-            #Resultado = 32
+            # Answer = 32
             # data = separateString("27 + (14 + 3 * (100 / (18 – 4 * 2) + 7) ) / 13")
 
-            #Resultado = 180
+            # Answer = 180
             # data = separateString("10 * (30 / (2 * 3 + 4) + 15)")
 
-            #Resultado = -81
+            # Answer = -81
             # data = separateString("25 + (14 – (25 * 4 + 40 – 20))")
+
+            # Answer = -16
+            # data = separateString("23 + 12 - 55 + (2 + 4) - 8 / 2 ^ 2")
+
+            # Answer = 30
+            # data = separateString("32 + 22 / 2 + 5 - 6 * 3")
 
             print(data)
 
@@ -42,7 +49,7 @@ class CoordenatorAgent(Agent):
 
                 onlyNumbersData = f"{operands['x1']} {operands['x2']}"
 
-                # Enviar mensagem para o respectivo agente
+                # Send the message to the agent
                 receiveragent = None
                 if operands["Op"] == "+":
                     receiveragent = AdditionAgent("sumagent@anoxinon.me", "sum")
@@ -69,9 +76,7 @@ class CoordenatorAgent(Agent):
                     del(data[operands['n'] + 1])
                     del(data[operands['n'] - 1])
                     print(f"Answer: {data}")
-                    # self.run(str(data).strip('[]'))
             print(f"================ FINAL ANSWER: {float(data[0])} ================")
-            await self.agent.stop()
 
     async def setup(self):
         print("CoordenatorAgent started")
